@@ -103,7 +103,7 @@ def list_mous():
         query = query.order_by(sort_col)
     # Pagination
     page = request.args.get('page', 1, type=int)
-    per_page = 10
+    per_page = 50  # Show 50 items per page
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     mous = pagination.items
     # For filter dropdowns (use MasterValue)
