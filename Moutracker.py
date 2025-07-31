@@ -576,11 +576,8 @@ def export_mous():
         if direction == 'desc':
             sort_col = sort_col.desc()
         query = query.order_by(sort_col)
-    # Pagination (only current page)
-    page = request.args.get('page', 1, type=int)
-    per_page = 10
-    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
-    mous = pagination.items
+    # Export all filtered items (no pagination)
+    mous = query.all()
     # Export to Excel
     wb = openpyxl.Workbook()
     ws = wb.active
