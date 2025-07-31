@@ -10,6 +10,7 @@ import json
 import sys
 from jinja2 import pass_context
 
+#uday jain code
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///moutracker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
