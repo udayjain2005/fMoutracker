@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>DB Import Export</h1>
+<form method="post" enctype="multipart/form-data" style="margin-bottom:32px;">
+    <div style="margin-bottom:16px;">
+        <label for="db_file">Import SQLite DB File (.db):</label>
+        <input type="file" name="db_file" accept=".db">
+        <button type="submit" name="import_db">Import DB</button>
+    </div>
+</form>
+<form method="post">
+    <button type="submit" name="export_db">Export Current DB</button>
+</form>
+{% if message %}
+    <div class="flash" style="margin-top:24px;">{{ message }}</div>
+{% endif %}
+{% endblock %}

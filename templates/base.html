@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoU Tracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>MoU Tracker</h2>
+            <ul>
+                <li><a href="/mous">MoU Listing</a></li>
+                <li><a href="/mou/new">Generate MoU</a></li>
+                <li><a href="/analytics">Analytics</a></li>
+                <li><a href="/audit">Audit Log</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/template/upload">MOU Template</a></li>
+                <li><a href="/import">Import Excel</a></li>
+                <li><a href="/db-import-export">DB Import Export</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="flash-messages">
+                  {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

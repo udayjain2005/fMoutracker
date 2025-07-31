@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Map Word Template Placeholders to MoU Fields</h2>
+<form method="post" action="{{ url_for('save_template_mapping', filename=filename) }}">
+    <table>
+        <tr><th>Placeholder</th><th>MoU Field</th></tr>
+        {% for placeholder in placeholders %}
+        <tr>
+            <td>{{ placeholder }}</td>
+            <td>
+                <select name="mapping_{{ placeholder }}">
+                    <option value="">-- Select Field --</option>
+                    <option value="company_name">Company Name</option>
+                    <option value="start_date">Start Date</option>
+                    <option value="end_date">End Date</option>
+                    <option value="type">Type</option>
+                    <option value="sector">Sector</option>
+                    <option value="investment">Investment</option>
+                    <option value="country">Country</option>
+                    <option value="state">State</option>
+                    <option value="district">District</option>
+                    <option value="stage">Stage</option>
+                    <option value="land_status">Land Status</option>
+                    <option value="clearance_status">Clearance Status</option>
+                    <option value="commissioning_status">Commissioning Status</option>
+                    <option value="remarks">Remarks</option>
+                    <option value="title">Title</option>
+                </select>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">Save Mapping</button>
+</form>
+{% endblock %}

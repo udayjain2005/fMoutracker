@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>MoU Listing</h1>
+<div class="filters">
+    <form method="get" class="filter-form" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+        <input type="text" name="company" placeholder="Company Name" value="{{ request.args.get('company', '') }}" style="flex: 1 1 180px;">
+        <select name="country" style="flex: 1 1 140px;">
+            <option value="">Country</option>
+            {% for country in countries %}
+            <option value="{{ country.id }}" {% if request.args.get('country') == country.id|string %}selected{% endif %}>{{ country.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="type" style="flex: 1 1 140px;">
+            <option value="">Type</option>
+            {% for type in types %}
+            <option value="{{ type.id }}" {% if request.args.get('type') == type.id|string %}selected{% endif %}>{{ type.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="sector" style="flex: 1 1 140px;">
+            <option value="">Sector</option>
+            {% for sector in sectors %}
+            <option value="{{ sector.id }}" {% if request.args.get('sector') == sector.id|string %}selected{% endif %}>{{ sector.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" style="flex: 0 0 auto;">Filter</button>
+        <button type="button" onclick="window.location='{{ url_for('export_mous', **request.args) }}'" class="button" style="flex: 0 0 auto; margin-left:8px; background:#3b82f6; color:white; border:none; border-radius:4px; padding:12px 24px; font-size:1em; font-weight:600; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.5); transition:background 0.2s;">Export</button>
+    </form>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Company Name</th>
+            <th>Type</th>
+            <th>Sector</th>
+            <th>Investment</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Stage</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Word</th>
+            <th>PDF</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mou in mous %}
+        <tr>
+            <td>{{ mou.id }}</td>
+            <td>{{ mou.title }}</td>
+            <td>{{ mou.company_name }}</td>
+            <td>{{ mou.type.name if mou.type else '' }}</td>
+            <td>{{ mou.sector.name if mou.sector else '' }}</td>
+            <td>{{ mou.investment }}</td>
+            <td>{{ mou.country.name if mou.country else '' }}</td>
+            <td>{{ mou.state.name if mou.state else '' }}</td>
+            <td>{{ mou.district.name if mou.district else '' }}</td>
+            <td>{{ mou.stage.name if mou.stage else '' }}</td>
+            <td class="date-cell">{{ mou.start_date_fmt }}</td>
+            <td class="date-cell">{{ mou.end_date_fmt }}</td>
+            <td>
+                {% set word_path = 'generated_docs/mou_' ~ mou.id ~ '.docx' %}
+                {% if word_path|file_exists %}
+                <a href="{{ url_for('download_mou_doc', mou_id=mou.id, filetype='docx') }}" class="button">Word</a>
+                {% else %}-{% endif %}
+            </td>
+            <td>
+                {% set pdf_path = 'generated_docs/mou_' ~ mou.id ~ '.pdf' %}
+                {% if pdf_path|file_exists %}
+                <a href="{{ url_for('download_mou_doc', mou_id=mou.id, filetype='pdf') }}" class="button">PDF</a>
+                {% else %}-{% endif %}
+            </td>
+            <td>
+                <a href="{{ url_for('edit_mou', mou_id=mou.id) }}" class="button">Edit</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="15">No MoUs found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<!-- Pagination UI (to be implemented) -->
+{% endblock %}

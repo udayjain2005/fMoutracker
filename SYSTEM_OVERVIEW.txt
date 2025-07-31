@@ -1,0 +1,49 @@
+MoU Tracker System Overview
+===========================
+
+1. Purpose:
+   - Track and manage Memorandums of Understanding (MoUs) with filtering, analytics, and audit logging.
+
+2. Main Technologies:
+   - Python (Flask web framework)
+   - SQLAlchemy ORM (SQLite database)
+   - Jinja2 templates (HTML rendering)
+   - Chart.js (dashboard analytics)
+   - Openpyxl (Excel import/export)
+
+3. Key Features:
+   - MoU CRUD: Create, edit, list, and filter MoUs.
+   - MasterValue: Centralized dropdown values for types, sectors, countries, etc.
+   - Analytics Dashboard: Summary cards, bar/line charts, filters, all responsive and compact.
+   - Audit Log: Tracks changes and actions on MoUs.
+   - Settings: Manage dropdown values for all master categories.
+   - Excel Import/Export: Bulk import MoUs and download template.
+
+4. Main Files:
+   - Moutracker.py: Flask app, routes, models, business logic.
+   - templates/: HTML templates for all pages (list, form, analytics, audit, settings, import).
+   - static/style.css: Custom styles for layout, dashboard, and forms.
+   - moutracker.db: SQLite database file.
+
+5. Analytics Dashboard:
+   - Summary cards for total MoUs, investment, active, expiring soon.
+   - Filters for country, sector, stage, date range (horizontal alignment).
+   - Three bar charts: Investment by Sector, MoU Count by Country, MoU Stage Distribution.
+   - One large line chart: MoUs by Start Date.
+   - All charts and cards are responsive and visually aligned.
+
+6. How to Extend:
+   - Add new master categories in MasterValue and settings.html.
+   - Add new analytics by updating Moutracker.py and analytics.html.
+   - Use SQLAlchemy for all database operations.
+   - Use Chart.js for new visualizations.
+
+7. How to Run:
+   - Run Moutracker.py with Flask (debug mode recommended for development).
+   - Database tables are auto-created if not present.
+
+8. Notes:
+   - All UI is designed for a dark theme (Material Design palette).
+   - Responsive design for desktop and mobile.
+   - All business logic is in Moutracker.py for easy maintenance.
+

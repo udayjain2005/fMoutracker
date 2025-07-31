@@ -1,0 +1,200 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<div class="analytics-new-dashboard">
+    <h1 class="dashboard-title">MoU Analytics</h1>
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <div class="card-label">Total MoUs</div>
+            <div class="card-value">{{ summary.total_mous }}</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-label">Total Investment</div>
+            <div class="card-value">₹{{ summary.total_investment | round(2) }}</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-label">Active MoUs</div>
+            <div class="card-value">{{ summary.active_mous }}</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-label">Expiring Soon</div>
+            <div class="card-value">{{ summary.expiring_soon }}</div>
+        </div>
+    </div>
+    <form class="dashboard-filters" method="get">
+        <div class="filter-group">
+            <select name="country">
+                <option value="">Country</option>
+                {% for country in countries %}
+                <option value="{{ country.id }}" {% if request.args.get('country') == country.id|string %}selected{% endif %}>{{ country.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="sector">
+                <option value="">Sector</option>
+                {% for sector in sectors %}
+                <option value="{{ sector.id }}" {% if request.args.get('sector') == sector.id|string %}selected{% endif %}>{{ sector.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="stage">
+                <option value="">Stage</option>
+                {% for stage in stages %}
+                <option value="{{ stage.id }}" {% if request.args.get('stage') == stage.id|string %}selected{% endif %}>{{ stage.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="date" name="start_date" value="{{ request.args.get('start_date', '') }}" placeholder="Start Date (DD-MM-YYYY)">
+            <input type="date" name="end_date" value="{{ request.args.get('end_date', '') }}" placeholder="End Date (DD-MM-YYYY)">
+            <button type="submit">Apply Filters</button>
+        </div>
+    </form>
+    <div class="dashboard-graphs">
+        <div class="graph-card">
+            <h2>Investment by Sector</h2>
+            <canvas id="investmentBySector" height="120"></canvas>
+        </div>
+        <div class="graph-card">
+            <h2>MoU Count by Country</h2>
+            <canvas id="mouCountByCountry" height="120"></canvas>
+        </div>
+        <div class="graph-card">
+            <h2>Stage Distribution</h2>
+            <canvas id="stageDistribution" height="120"></canvas>
+        </div>
+        <div class="graph-card graph-wide">
+            <h2>MoUs by Start Date</h2>
+            <canvas id="startDateTrends" height="160"></canvas>
+        </div>
+    </div>
+</div>
+<style>
+.analytics-new-dashboard { max-width: 1200px; margin: 0 auto; padding: 24px; background: #0C1B2A; }
+.dashboard-title { text-align:center; font-size:2em; margin-bottom:24px; color:#F0F4F8; letter-spacing:2px; }
+.dashboard-cards { display: flex; gap: 24px; justify-content: center; margin-bottom: 32px; }
+.dashboard-card { background: #112B41; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 24px 32px; text-align: center; min-width: 180px; border: 1px solid #1B2D3F; }
+.card-label { font-size:1.1em; color:#C3D1DD; margin-bottom:6px; }
+.card-value { font-size:2.2em; font-weight:700; color:#F0F4F8; letter-spacing:1px; }
+.dashboard-filters { margin-bottom: 32px; text-align:center; background: #0C1B2A; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.10); padding: 18px 0; }
+.filter-group { display: flex; gap: 16px; justify-content: center; flex-wrap: nowrap; align-items: center; background: transparent; }
+.filter-group select, .filter-group input { padding: 8px 12px; border-radius: 6px; border: 1px solid #1B2D3F; background: #112B41; color: #C3D1DD; font-size:1em; }
+.filter-group button { background:#254E70; color:#F0F4F8; border:none; border-radius:6px; padding:8px 24px; font-size:1em; font-weight:600; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,0.10); transition:background 0.2s; }
+.dashboard-graphs { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 32px; }
+.graph-card { background: #112B41; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); padding: 24px; border: 1px solid #1B2D3F; }
+.graph-card h2 { font-size:1.1em; color:#C3D1DD; margin-bottom:12px; }
+.graph-wide { grid-column: span 2; }
+input[type="date"] { color: #C3D1DD; background: #112B41; border: 1px solid #1B2D3F; border-radius: 6px; padding: 8px 12px; font-size: 1em; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script>
+const investmentBySector = {{ investment_by_sector | tojson }};
+const mouCountByCountry = {{ mou_count_by_country | tojson }};
+const stageDistribution = {{ stage_distribution | tojson }};
+const startDateTrends = {{ start_date_trends | tojson }};
+
+function sortChartData(labels, data) {
+    const zipped = labels.map((label, i) => ({ label, value: data[i] }));
+    zipped.sort((a, b) => b.value - a.value);
+    return {
+        labels: zipped.map(x => x.label),
+        data: zipped.map(x => x.value)
+    };
+}
+const sortedInvestment = sortChartData(investmentBySector.labels, investmentBySector.data);
+const sortedCountry = sortChartData(mouCountByCountry.labels, mouCountByCountry.data);
+const sortedStage = sortChartData(stageDistribution.labels, stageDistribution.data);
+
+const barOptions = {
+    responsive: true,
+    plugins: {
+        legend: { display: false },
+        tooltip: { enabled: true },
+        datalabels: {
+            anchor: 'end',
+            align: 'top',
+            color: '#F0F4F8',
+            font: { weight: 'bold', size: 14 }
+        }
+    },
+    scales: {
+        x: {
+            grid: { display: false },
+            ticks: { color: '#C3D1DD', font: { size: 12 } }
+        },
+        y: {
+            grid: { display: false },
+            ticks: { color: '#C3D1DD', font: { size: 12 } }
+        }
+    }
+};
+
+new Chart(document.getElementById('investmentBySector'), {
+    type: 'bar',
+    data: {
+        labels: sortedInvestment.labels,
+        datasets: [{
+            label: 'Investment',
+            data: sortedInvestment.data,
+            backgroundColor: '#4A90E2',
+            borderColor: '#1F77B4',
+            borderWidth: 2
+        }]
+    },
+    options: barOptions,
+    plugins: [ChartDataLabels]
+});
+new Chart(document.getElementById('mouCountByCountry'), {
+    type: 'bar',
+    data: {
+        labels: sortedCountry.labels,
+        datasets: [{
+            label: 'MoU Count',
+            data: sortedCountry.data,
+            backgroundColor: '#6BAED6',
+            borderColor: '#08519C',
+            borderWidth: 2
+        }]
+    },
+    options: barOptions,
+    plugins: [ChartDataLabels]
+});
+new Chart(document.getElementById('stageDistribution'), {
+    type: 'bar',
+    data: {
+        labels: sortedStage.labels,
+        datasets: [{
+            label: 'Stage',
+            data: sortedStage.data,
+            backgroundColor: '#9EC9E2',
+            borderColor: '#B3CDE3',
+            borderWidth: 2
+        }]
+    },
+    options: barOptions,
+    plugins: [ChartDataLabels]
+});
+new Chart(document.getElementById('startDateTrends'), {
+    type: 'line',
+    data: {
+        labels: startDateTrends.labels,
+        datasets: [{
+            label: 'MoUs Started',
+            data: startDateTrends.data,
+            borderColor: '#4A90E2',
+            backgroundColor: 'rgba(154,202,230,0.10)',
+            pointBackgroundColor: '#1F77B4',
+            pointBorderColor: '#08519C',
+            borderWidth: 3
+        }]
+    },
+    options: {
+        responsive:true,
+        plugins:{
+            legend:{display:true},
+            tooltip:{enabled:true}
+        },
+        scales:{
+            x:{ticks:{color:'#C3D1DD',font:{size:12}},grid:{display:false}},
+            y:{ticks:{color:'#C3D1DD',font:{size:12}},grid:{display:false}}
+        }
+    }
+});
+</script>
+{% endblock %}

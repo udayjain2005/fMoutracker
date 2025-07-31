@@ -1,0 +1,304 @@
+body {
+    background: #121212;
+    color: #ECECEC;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+}
+.container {
+    display: flex;
+    min-height: 100vh;
+    /* Remove any gap or justify-content that causes spacing */
+}
+.sidebar {
+    background: #1a1c23;
+    width: 240px;
+    min-width: 240px;
+    max-width: 240px;
+    padding: 32px 16px;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.5);
+    color: #e6eaf1;
+    flex-shrink: 0;
+    /* Ensure sidebar stays fixed width */
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+.sidebar ul li a {
+    color: #e6eaf1;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.08em;
+    padding: 10px 18px;
+    border-radius: 6px;
+    display: block;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    border: 1px solid transparent;
+    letter-spacing: 0.5px;
+    box-shadow: none;
+}
+.sidebar ul li a:hover, .sidebar ul li a:focus {
+    background: #2563eb;
+    color: #fff;
+    border: 1px solid #3b82f6;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.15);
+    text-decoration: none;
+}
+.sidebar h2 {
+    color: #FFD600;
+    margin-bottom: 32px;
+    font-size: 1.7em;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background: #0f1117;
+    margin-left: 0;
+    /* Remove margin-left to eliminate gap */
+    min-width: 0;
+}
+.flash-messages {
+    margin-bottom: 20px;
+}
+.flash {
+    background: #1e2028;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 8px;
+}
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1a1c23;
+    color: #e6eaf1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+th, td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #2a2d38;
+    border-right: 1px solid #2a2d38;
+}
+th:last-child, td:last-child {
+    border-right: none;
+}
+/* Prevent wrapping for date columns */
+td.date-cell {
+    white-space: nowrap;
+}
+th {
+    background: #1a1c23;
+    color: #e6eaf1;
+    font-weight: 600;
+}
+tr:hover {
+    background: #1e2028;
+}
+/* Form styles */
+form {
+    background: #1a1c23;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+label {
+    color: #e6eaf1;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+input, select, textarea {
+    background: #1e2028;
+    color: #e6eaf1;
+    border: 1px solid #2a2d38;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 16px;
+    width: 100%;
+    font-size: 1em;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+button {
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    transition: background 0.2s;
+}
+button:hover {
+    background: #2563eb;
+}
+/* Secondary text and links */
+.secondary {
+    color: #8f95a5;
+}
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+}
+
+/* --- Remove analytics-specific professional palette styles --- */
+/* The previous analytics styles are now handled inline in analytics.html. No need for the McKinsey palette here. */
+
+/* --- EY Dashboard Styles --- */
+.analytics-summary {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+.card {
+    flex: 1;
+    background: #1E1E1E;
+    color: #ECECEC;
+    box-shadow: 0 2px 8px rgba(33,33,33,0.10);
+    border-radius: 10px;
+    padding: 18px 0;
+    min-width: 120px;
+    text-align: center;
+    border: 1px solid #232323;
+    font-size: 1em;
+    margin: 0 8px;
+    max-width: 220px;
+}
+.card-label {
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.card-value {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #FFD600;
+}
+.analytics-filters {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+.analytics-filters form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: nowrap;
+    align-items: center;
+    background: #18191c;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(33,33,33,0.10);
+    padding: 18px 24px;
+    width: 100%;
+    max-width: 900px;
+    justify-content: center;
+}
+.analytics-filters select,
+.analytics-filters input[type="text"] {
+    min-width: 120px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #232323;
+    background: #232323;
+    color: #ECECEC;
+    font-size: 1em;
+    margin-bottom: 0;
+}
+.analytics-filters button {
+    padding: 8px 18px;
+    font-size: 1em;
+    margin-bottom: 0;
+}
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 18px;
+    width: 100%;
+    max-width: 1200px;
+}
+.charts-grid > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.charts-grid h2 {
+    color: #ECECEC;
+    font-size: 1em;
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+}
+.charts-grid canvas {
+    background: #232323;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(33,33,33,0.10);
+    border: 1px solid #232323;
+    height: 140px !important;
+    max-width: 100%;
+    width: 100% !important;
+}
+.analytics-large-chart {
+    margin-top: 10px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+.analytics-large-chart h2 {
+    color: #ECECEC;
+    font-size: 1em;
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+}
+.analytics-large-chart canvas {
+    background: #232323;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(33,33,33,0.10);
+    border: 1px solid #232323;
+    height: 180px !important;
+    max-width: 100%;
+    width: 100% !important;
+}
+@media (max-width: 900px) {
+    .analytics-dashboard-container {
+        padding: 0 4px;
+    }
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .analytics-summary {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    .analytics-large-chart canvas {
+        height: 120px !important;
+    }
+    .analytics-filters form {
+        flex-wrap: wrap;
+        padding: 12px 8px;
+        gap: 8px;
+    }
+}

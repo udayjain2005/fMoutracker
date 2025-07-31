@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ 'Edit MoU' if mou is defined and mou else 'Generate MoU' }}</h1>
+<form method="post">
+    <label for="Title">Title</label>
+    <input type="text" name="Title" required value="{{ mou.title if mou is defined and mou else '' }}">
+    <label for="company_name">Company Name</label>
+    <input type="text" name="company_name" required value="{{ mou.company_name if mou is defined and mou else '' }}">
+    <label for="type_id">Type</label>
+    <select name="type_id" required>
+        <option value="">Select Type</option>
+        {% for type in types %}
+        <option value="{{ type.id }}" {% if mou is defined and mou and mou.type_id == type.id %}selected{% endif %}>{{ type.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="sector_id">Sector</label>
+    <select name="sector_id" required>
+        <option value="">Select Sector</option>
+        {% for sector in sectors %}
+        <option value="{{ sector.id }}" {% if mou is defined and mou and mou.sector_id == sector.id %}selected{% endif %}>{{ sector.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="investment">Investment</label>
+    <input type="number" name="investment" required value="{{ mou.investment if mou is defined and mou else '' }}">
+    <label for="country_id">Country</label>
+    <select name="country_id" required>
+        <option value="">Select Country</option>
+        {% for country in countries %}
+        <option value="{{ country.id }}" {% if mou is defined and mou and mou.country_id == country.id %}selected{% endif %}>{{ country.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="state_id">State</label>
+    <select name="state_id" required>
+        <option value="">Select State</option>
+        {% for state in states %}
+        <option value="{{ state.id }}" {% if mou is defined and mou and mou.state_id == state.id %}selected{% endif %}>{{ state.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="district_id">District</label>
+    <select name="district_id" required>
+        <option value="">Select District</option>
+        {% for district in districts %}
+        <option value="{{ district.id }}" {% if mou is defined and mou and mou.district_id == district.id %}selected{% endif %}>{{ district.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="stage_id">Stage</label>
+    <select name="stage_id" required>
+        <option value="">Select Stage</option>
+        {% for stage in stages %}
+        <option value="{{ stage.id }}" {% if mou is defined and mou and mou.stage_id == stage.id %}selected{% endif %}>{{ stage.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="land_status_id">Land Status</label>
+    <select name="land_status_id" required>
+        <option value="">Select Land Status</option>
+        {% for land_status in land_statuses %}
+        <option value="{{ land_status.id }}" {% if mou is defined and mou and mou.land_status_id == land_status.id %}selected{% endif %}>{{ land_status.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="clearance_status_id">Clearance Status</label>
+    <select name="clearance_status_id" required>
+        <option value="">Select Clearance Status</option>
+        {% for clearance_status in clearance_statuses %}
+        <option value="{{ clearance_status.id }}" {% if mou is defined and mou and mou.clearance_status_id == clearance_status.id %}selected{% endif %}>{{ clearance_status.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="commissioning_status_id">Commissioning Status</label>
+    <select name="commissioning_status_id" required>
+        <option value="">Select Commissioning Status</option>
+        {% for commissioning_status in commissioning_statuses %}
+        <option value="{{ commissioning_status.id }}" {% if mou is defined and mou and mou.commissioning_status_id == commissioning_status.id %}selected{% endif %}>{{ commissioning_status.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="start_date">Start Date</label>
+    <input type="text" name="start_date" required value="{{ mou.start_date.strftime('%d-%m-%Y') if mou is defined and mou and mou.start_date else '' }}" placeholder="DD-MM-YYYY">
+    <label for="end_date">End Date</label>
+    <input type="text" name="end_date" required value="{{ mou.end_date.strftime('%d-%m-%Y') if mou is defined and mou and mou.end_date else '' }}" placeholder="DD-MM-YYYY">
+    <label for="remarks">Remarks</label>
+    <textarea name="remarks">{{ mou.remarks if mou is defined and mou else '' }}</textarea>
+    <button type="submit">Save MoU</button>
+    {% if mou %}
+    <button type="submit" name="generate_docs" value="1" style="margin-left:12px; background:#254E70; color:#fff;">Generate Word & PDF</button>
+    {% endif %}
+</form>
+{% if mou %}
+<form method="post" action="{{ url_for('delete_mou', mou_id=mou.id) }}" onsubmit="return confirm('Are you sure you want to delete this MoU?');" style="margin-top:16px;">
+    <button type="submit" class="button" style="background:#E74C3C; color:#fff;">Delete MoU</button>
+</form>
+{% endif %}
+{% endblock %}
