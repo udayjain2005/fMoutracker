@@ -6,3 +6,4 @@ python-docx
 Werkzeug
 pypandoc
 Jinja2
+gunicorn
