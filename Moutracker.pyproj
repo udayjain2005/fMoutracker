@@ -29,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="moutracker.db" />
+    <Content Include="requirements.txt" />
     <Content Include="static\style.css" />
     <Content Include="SYSTEM_OVERVIEW.txt" />
     <Content Include="templates\analytics.html" />
